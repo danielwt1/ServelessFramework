@@ -7,40 +7,36 @@ provider:
   name: aws
   runtime: nodejs18.x
   region: us-east-2
-  httpApi:
-    authorizers: 
-      customAuth: 
-        type: request
-        functionName: authorizer
+
 
 functions:
   getDynamo:
     handler: getUserDynamo.handler
     role: arn:aws:iam::545770966230:role/service-role/DynamoGetData-role-gcjrqw8a
     events:
-      - httpApi:
+      - http:
           path: /
           method: get
           authorizer:
-            name: customAuth
+            name: authorizer
   postDynamo:
     handler: postUserDynamo.handler
     role: arn:aws:iam::545770966230:role/service-role/PostLambda-role-ffhidh7f
     events:
-      - httpApi:
+      - http:
           path: /
           method: post
           authorizer:
-            name: customAuth
+            name: authorizer
   putDynamo:
     handler: putUserDynamo.handler
     role: arn:aws:iam::545770966230:role/service-role/UpdateLambda-role-n2ust3a5
     events:
-      - httpApi:
+      - http:
           path: /
           method: put
           authorizer:
-            name: customAuth
+            name: authorizer
   authorizer:
     handler: authorizer.handler
     role: arn:aws:iam::545770966230:role/ExecutrionRoleLambda
@@ -49,11 +45,11 @@ functions:
     handler: deleteUserDynamo.handler
     role: arn:aws:iam::545770966230:role/service-role/DeleteDynamoLambda-role-xz9mhcqd
     events:
-      - httpApi:
+      - http:
           path: /
           method: delete
           authorizer:
-            name: customAuth
+            name: authorizer
 
 
           
