@@ -1,0 +1,58 @@
+org: danielwt1
+app: aws-lmabda-authorizer
+service: aws-lmabda-authorizer
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  httpApi:
+    authorizers: 
+      customAuth: 
+        type: request
+        functionName: authorizer
+
+functions:
+  getDynamo:
+    handler: getUserDynamo.handler
+    role: arn:aws:iam::545770966230:role/service-role/DynamoGetData-role-gcjrqw8a
+    events:
+      - httpApi:
+          path: /
+          method: get
+          authorizer:
+            name: customAuth
+  postDynamo:
+    handler: postUserDynamo.handler
+    role: arn:aws:iam::545770966230:role/service-role/PostLambda-role-ffhidh7f
+    events:
+      - httpApi:
+          path: /
+          method: post
+          authorizer:
+            name: customAuth
+  putDynamo:
+    handler: putUserDynamo.handler
+    role: arn:aws:iam::545770966230:role/service-role/UpdateLambda-role-n2ust3a5
+    events:
+      - httpApi:
+          path: /
+          method: put
+          authorizer:
+            name: customAuth
+  authorizer:
+    handler: authorizer.handler
+    role: arn:aws:iam::545770966230:role/ExecutrionRoleLambda
+
+  deleteDynamo:
+    handler: deleteUserDynamo.handler
+    role: arn:aws:iam::545770966230:role/service-role/DeleteDynamoLambda-role-xz9mhcqd
+    events:
+      - httpApi:
+          path: /
+          method: delete
+          authorizer:
+            name: customAuth
+
+
+          
